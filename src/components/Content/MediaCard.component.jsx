@@ -15,16 +15,15 @@ const useStyles = makeStyles({
     height: 140,
   },
   content: {
-    padding: 30
-  }
-
+    padding: 30,
+  },
 });
 
 export default function MediaCard(props) {
   const classes = useStyles();
 
   return (
-    <Grid item xs={12} sm={6} md={4} >
+    <Grid item xs={12} sm={6} md={4}>
       <Card className={classes.root}>
         <CardMedia className={classes.media} image={props.imageUrl} title="" />
         <CardActionArea>

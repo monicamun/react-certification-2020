@@ -90,7 +90,7 @@ const Navbar = () => {
               inputProps={{ 'aria-label': 'search' }}
             />
           </div>
-          <Typography className={classes.title}></Typography>
+          <Typography className={classes.title} />
           <Switch
             checked={state.checked}
             onChange={handleChange}
@@ -103,7 +103,7 @@ const Navbar = () => {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <div className={classes.offset}></div>
+      <div className={classes.offset} />
     </div>
   );
 };

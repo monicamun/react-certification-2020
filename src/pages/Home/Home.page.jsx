@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 // import { useHistory } from 'react-router-dom';
-import Content from '../../components/Content'
+import Content from '../../components/Content';
 
 // import { useAuth } from '../../providers/Auth';
 import './Home.styles.css';
@@ -19,7 +19,7 @@ function HomePage() {
   return (
     <section className="homepage" ref={sectionRef}>
       <h1>Hello stranger!</h1>
-      <Content/>
+      <Content />
 
       {/* {authenticated ? (
         <>
