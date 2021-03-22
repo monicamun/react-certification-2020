@@ -24,6 +24,6 @@ describe('VideosList', () => {
       );
       const mockTitles = data.items.map((v) => v.snippet.title);
       expect(renderedTitles).toEqual(mockTitles);
-    }, 1000);
+    }, 200);
   });
 });

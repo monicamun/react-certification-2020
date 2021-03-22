@@ -2,8 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Grid } from '@material-ui/core';
 
-export default function Card(props) {
-  const StyledCard = styled.div`
+const StyledCard = styled.div`
     display: inline-block;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
     margin: 20px;
@@ -53,6 +52,9 @@ export default function Card(props) {
     border-radius: inherit;
   `;
 
+
+export default function Card(props) {
+  
   return (
     <Grid item xs={12} sm={6} md={4}>
       <StyledCard>
@@ -60,7 +62,9 @@ export default function Card(props) {
           <StyledImg src={props.imageUrl} alt={props.title} />
         </StyledImage>
         <StyledCardText>
-          <StyleCardTitle>{props.title}</StyleCardTitle>
+          <StyleCardTitle data-testid="video-title">
+            {props.title}
+          </StyleCardTitle>
           <StyleCardDesc>{props.body}</StyleCardDesc>
         </StyledCardText>
       </StyledCard>
