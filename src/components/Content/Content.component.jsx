@@ -6,8 +6,7 @@ import { getVideos } from '../../services/videoService';
 
 const useStyles = makeStyles({
   content: {
-    padding: 100,
-    marginTop: 1000,
+    padding: 20,
   },
 });
 
