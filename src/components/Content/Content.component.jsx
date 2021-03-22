@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import MediaCard from './MediaCard.component';
+import VideosList from './VideosList/VideosList.component';
 import { getVideos } from '../../services/videoService';
 
 const useStyles = makeStyles({
@@ -26,16 +26,7 @@ export default function Content() {
   return (
     <main className="container">
       <Grid className={classes.content} container spacing={10}>
-        {videos
-          ? videos.map((video) => (
-              <MediaCard
-                key={video.etag}
-                title={video.title}
-                imageUrl={video.imageUrl}
-                body={video.description}
-              />
-            ))
-          : 'Loading...'}
+      <VideosList videos={videos} />
       </Grid>
     </main>
   );

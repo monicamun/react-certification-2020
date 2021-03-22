@@ -25,8 +25,8 @@ export default function MediaCard(props) {
         <CardMedia className={classes.media} image={props.imageUrl} title="" />
         <CardActionArea>
           <CardContent>
-            <Typography gutterBottom variant="h5" component="h2" data-testid="video-title">
-              {props.title}
+            <Typography gutterBottom variant="h5" component="h2">
+              <span data-testid='video-title'>{props.title}</span>
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
               {props.body}
