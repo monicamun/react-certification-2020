@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import VideosList from './VideosList.component';
-import data from '../../../mocks/youtube-videos-mock.json';
+import data from '../../mocks/youtube-videos-mock.json';
 
 describe('VideosList', () => {
   it('exists', () => {

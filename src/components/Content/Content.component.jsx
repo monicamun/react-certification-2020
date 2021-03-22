@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import VideosList from './VideosList/VideosList.component';
+import VideosList from '../VideosList/VideosList.component';
 import { getVideos } from '../../services/videoService';
 
 const useStyles = makeStyles({
@@ -26,7 +26,7 @@ export default function Content() {
   return (
     <main className="container">
       <Grid className={classes.content} container spacing={10}>
-      <VideosList videos={videos} />
+        <VideosList videos={videos} />
       </Grid>
     </main>
   );
