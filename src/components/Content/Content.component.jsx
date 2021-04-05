@@ -17,7 +17,6 @@ export default function Content() {
     getVideos(setVideos);
   }, []);
 
-
   const classes = useStyles();
 
   return (

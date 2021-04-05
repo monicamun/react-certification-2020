@@ -1,7 +1,13 @@
 import { Grid } from '@material-ui/core';
 import React from 'react';
-import { StyledCard, StyledImage, StyledImg, StyledCardText, StyleCardTitle, StyleCardDesc } from './styled'
-
+import {
+  StyledCard,
+  StyledImage,
+  StyledImg,
+  StyledCardText,
+  StyleCardTitle,
+  StyleCardDesc,
+} from './styled';
 
 export default function Card({ video }) {
   if (video == null) {
