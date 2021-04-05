@@ -1,12 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router';
 import { Grid } from '@material-ui/core';
-import { loadVideo } from '../../services/videoService';
+import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
+import { getVideos, loadVideo } from '../../services/videoService';
+import SearchContext from '../../providers/SearchContext';
+
+const StyledRelatedCard = styled.div`
+  cursor: pointer;
+`;
+
+const StyledImd = styled.img`
+  width: 100%;
+`;
+
+function RelatedCard({ video }) {
+  const history = useHistory();
+  return (
+    <StyledRelatedCard
+      onClick={() => history.push({ pathname: `/${video.videoId}`, video })}
+    >
+      <Grid container>
+        <Grid item xs={4}>
+          <StyledImd src={video.imageUrl} alt={video.title} />
+        </Grid>
+        <Grid item xs={8}>
+          {video.title}
+        </Grid>
+      </Grid>
+    </StyledRelatedCard>
+  );
+}
 
 export default function VideoDetails() {
   const [video, setVideo] = useState();
+  const [relatedVideos, setRelatedVideos] = useState([]);
   const location = useLocation();
   const { videoId } = useParams();
+  const searchContext = useContext(SearchContext);
 
   useEffect(() => {
     if (location.video === undefined || location.video === null) {
@@ -15,6 +46,10 @@ export default function VideoDetails() {
       setVideo(location.video);
     }
   }, [videoId, location.video]);
+
+  useEffect(() => {
+    getVideos(setRelatedVideos, searchContext.searchText);
+  }, [searchContext.searchText]);
 
   if (video == null) {
     return <div>Loading...</div>;
@@ -42,7 +77,9 @@ export default function VideoDetails() {
         <p>{video.description}</p>
       </Grid>
       <Grid item md={4}>
-        holi
+        {relatedVideos.map((v) => (
+          <RelatedCard key={v.videoId} video={v} />
+        ))}
       </Grid>
     </Grid>
   );
