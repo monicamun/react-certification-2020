@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 
 export const StyledCard = styled.div`
+  color: inherit;
+  text-decoration: inherit;
+  cursor: pointer;
   display: inline-block;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
   margin: 20px;

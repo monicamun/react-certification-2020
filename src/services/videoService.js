@@ -1,6 +1,6 @@
-export function getVideos(setVideos) {
+function initializeYoutubeApi(fn) {
   // initialize gapi
-  window.gapi.load('client:auth2', async function () {
+  window.gapi.load('client:auth2', async () => {
     await window.gapi.auth2.init({
       client_id:
         '537606572960-o8ms8f2g27kepgh2fmd14m0bgsmsh6og.apps.googleusercontent.com',
@@ -11,12 +11,18 @@ export function getVideos(setVideos) {
       'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'
     );
 
+    await fn();
+  });
+}
+
+export function getVideos(setVideos, keyword) {
+  initializeYoutubeApi(async () => {
     // after initializing we can make the api call
     // call youtube search
     const response = await window.gapi.client.youtube.search.list({
       part: ['snippet'],
       maxResults: 25,
-      q: 'surfing',
+      q: keyword,
     });
 
     const videos = response.result.items
@@ -33,5 +39,59 @@ export function getVideos(setVideos) {
 
     // use the setVideos function passed by the component to set the videos to the state
     setVideos(videos);
+  });
+}
+
+export function getRelatedVideos(setRelatedVideos, videoId) {
+  initializeYoutubeApi(async () => {
+    // call youtube search
+    const response = await window.gapi.client.youtube.search.list({
+      part: ['snippet'],
+      maxResults: 25,
+      relatedToVideoId: videoId,
+    });
+
+    const videos = response.result.items
+      .map((video) => {
+        return {
+          etag: video.etag,
+          videoId: video.id.videoId,
+          title: video.snippet.title,
+          imageUrl: video.snippet.thumbnails.medium.url,
+          description: video.snippet.description,
+        };
+      })
+      .filter((video) => video.videoId);
+
+    // use the setVideos function passed by the component to set the videos to the state
+    setRelatedVideos(videos);
+  });
+}
+
+export function loadVideo(setVideo, videoId) {
+  console.log(videoId);
+  initializeYoutubeApi(async () => {
+    // call youtube videos list
+    const response = await window.gapi.client.youtube.videos.list({
+      part: ['snippet,contentDetails,statistics'],
+      id: [videoId],
+    });
+
+    const videos = response.result.items
+      .map((video) => {
+        return {
+          etag: video.etag,
+          videoId,
+          title: video.snippet.title,
+          imageUrl: video.snippet.thumbnails.medium.url,
+          description: video.snippet.description,
+        };
+      })
+      .filter((video) => video.videoId);
+
+    const video = videos[0];
+
+    // use the setVideo function passed by the component to set the video to the state
+    setVideo(video);
   });
 }
