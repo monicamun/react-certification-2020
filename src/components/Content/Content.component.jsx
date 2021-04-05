@@ -14,12 +14,9 @@ export default function Content() {
   const [videos, setVideos] = useState([]);
 
   useEffect(() => {
-    async function fetchData() {
-      const videosResponse = await getVideos();
-      setVideos(videosResponse);
-    }
-    fetchData();
+    getVideos(setVideos);
   }, []);
+
 
   const classes = useStyles();
 

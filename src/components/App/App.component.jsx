@@ -11,6 +11,7 @@ import Layout from '../Layout';
 import { random } from '../../utils/fns';
 
 function App() {
+
   useLayoutEffect(() => {
     const { body } = document;
 

@@ -11,7 +11,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Switch from '@material-ui/core/Switch';
-import React from 'react';
+import React, { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,
@@ -62,12 +62,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = () => {
   const classes = useStyles();
-  const [state, setState] = React.useState({
-    checked: false,
-  });
+  const [isChecked, setIsChecked] = useState(false);
 
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
+  const handleChange = ({ target }) => {
+    setIsChecked(target.checked);
   };
 
   return (
@@ -92,7 +90,7 @@ const Navbar = () => {
           </div>
           <Typography className={classes.title} />
           <Switch
-            checked={state.checked}
+            checked={isChecked}
             onChange={handleChange}
             color="primary"
             name="checked"
