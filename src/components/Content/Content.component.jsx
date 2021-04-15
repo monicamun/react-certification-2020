@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import VideosList from '../VideosList/VideosList.component';
 import { getVideos } from '../../services/videoService';
+import SearchContext from '../../providers/SearchContext';
 
 const useStyles = makeStyles({
   content: {
@@ -12,16 +13,13 @@ const useStyles = makeStyles({
 
 export default function Content() {
   const [videos, setVideos] = useState([]);
+  const searchContext = useContext(SearchContext);
+  const classes = useStyles();
 
   useEffect(() => {
-    async function fetchData() {
-      const videosResponse = await getVideos();
-      setVideos(videosResponse);
-    }
-    fetchData();
-  }, []);
-
-  const classes = useStyles();
+    console.log(searchContext.searchText);
+    getVideos(setVideos, searchContext.searchText);
+  }, [searchContext.searchText]);
 
   return (
     <main className="container">

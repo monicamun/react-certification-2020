@@ -11,7 +11,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Switch from '@material-ui/core/Switch';
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import SearchContext from '../../providers/SearchContext';
 
 const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,
@@ -62,12 +63,18 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = () => {
   const classes = useStyles();
-  const [state, setState] = React.useState({
-    checked: false,
-  });
+  const [isChecked, setIsChecked] = useState(false);
+  const [searchText, setSearchText] = useState('wizeline');
+  const searchContext = useContext(SearchContext);
 
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
+  const handleChange = ({ target }) => {
+    setIsChecked(target.checked);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      searchContext.setSearchText(searchText);
+    }
   };
 
   return (
@@ -87,16 +94,23 @@ const Navbar = () => {
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
-              inputProps={{ 'aria-label': 'search' }}
+              inputProps={{
+                'aria-label': 'search',
+                value: searchText,
+                onChange: (e) => setSearchText(e.target.value),
+                onKeyDown: handleKeyDown,
+              }}
             />
           </div>
           <Typography className={classes.title} />
           <Switch
-            checked={state.checked}
+            checked={isChecked}
             onChange={handleChange}
             color="primary"
             name="checked"
-            inputProps={{ 'aria-label': 'primary checkbox' }}
+            inputProps={{
+              'aria-label': 'primary checkbox',
+            }}
           />
           <IconButton color="inherit">
             <AccountCircle />
