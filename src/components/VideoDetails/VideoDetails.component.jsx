@@ -2,27 +2,28 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router';
 import { Grid } from '@material-ui/core';
 import { getVideos, loadVideo } from '../../services/videoService';
-import GlobalContext from '../../providers/GlobalContext';
-import RelatedCard from './RelatedCard'
+import SearchContext from '../../providers/SearchContext';
+import RelatedCard from './RelatedCard';
 
-export default function VideoDetails() {
+export default function VideoDetails({ loadVideoFn = loadVideo, getVideosFn = getVideos }) {
   const [video, setVideo] = useState();
   const [relatedVideos, setRelatedVideos] = useState([]);
   const location = useLocation();
   const { videoId } = useParams();
-  const globalContext = useContext(GlobalContext);
+  const searchContext = useContext(SearchContext) || {};
 
   useEffect(() => {
-    if (location.video === undefined || location.video === null) {
-      loadVideo(setVideo, videoId);
+
+    if (typeof location.video === undefined || location.video === null) {
+      loadVideoFn(setVideo, videoId);
     } else {
       setVideo(location.video);
     }
   }, [videoId, location.video]);
 
   useEffect(() => {
-    getVideos(setRelatedVideos, globalContext.searchState);
-  }, [globalContext.searchState]);
+    getVideosFn(setRelatedVideos, searchContext.searchState);
+  }, [searchContext.searchState]);
 
   if (video == null) {
     return <div>Loading...</div>;

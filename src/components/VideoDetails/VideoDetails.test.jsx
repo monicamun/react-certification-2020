@@ -5,7 +5,8 @@ import { Router } from 'react-router-dom';
 import VideoDetails from './VideoDetails.component';
 
 describe('VideoDetails component', () => {
-  const [searchState, searchTextDispatch] = useReducer(() => {}, 'wizeline');
+  const getVideosFn = jest.fn();
+  const loadVideoFn = jest.fn();
 
   it('Should throw error if video details are missing', () => {
     const history = createMemoryHistory();
@@ -13,9 +14,7 @@ describe('VideoDetails component', () => {
     const renderVideoDetails = () =>
       render(
         <Router history={history}>
-          <GlobalContext.Provider value={{ searchState, searchTextDispatch }}>
-            <VideoDetails video={{}} />
-          </GlobalContext.Provider>
+            <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
         </Router>
       );
     expect(renderVideoDetails).toThrowError(
@@ -37,9 +36,7 @@ describe('VideoDetails component', () => {
   it('Should render video title', () => {
     render(
       <Router history={history}>
-        <GlobalContext.Provider value={{ searchState, searchTextDispatch }}>
-          <VideoDetails />
-        </GlobalContext.Provider>
+          <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
       </Router>
     );
     const videoTitle = screen.getByText(
@@ -51,9 +48,7 @@ describe('VideoDetails component', () => {
   it('Should render video description', () => {
     render(
       <Router history={history}>
-        <GlobalContext.Provider value={{ searchState, searchTextDispatch }}>
-          <VideoDetails />
-        </GlobalContext.Provider>
+          <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
       </Router>
     );
     const videoDescription = screen.getByText(/React hooks provide a highly-efficient/i);
@@ -63,9 +58,7 @@ describe('VideoDetails component', () => {
   it('should render youtube iframe with expected videoId', () => {
     render(
       <Router history={history}>
-        <GlobalContext.Provider value={{ searchState, searchTextDispatch }}>
-          <VideoDetails />
-        </GlobalContext.Provider>
+          <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
       </Router>
     );
 
