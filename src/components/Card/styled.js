@@ -47,7 +47,6 @@ export const StyleCardDesc = styled.p`
   margin-bottom: 0px;
 `;
 export const StyledCardText = styled.div`
-  background: #fff;
   padding: 20px;
   min-height: 200px;
   border-radius: inherit;

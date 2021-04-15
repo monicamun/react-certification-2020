@@ -11,8 +11,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Switch from '@material-ui/core/Switch';
-import React, { useContext, useState } from 'react';
-import SearchContext from '../../providers/SearchContext';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useGlobal } from '../../providers/GlobalContext/GlobalContext';
 
 const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,
@@ -63,17 +64,22 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = () => {
   const classes = useStyles();
+  const globalContext = useGlobal();
   const [isChecked, setIsChecked] = useState(false);
-  const [searchText, setSearchText] = useState('wizeline');
-  const searchContext = useContext(SearchContext);
+  const [innerSearchText, setInnerSearchText] = useState('wizeline');
+  const history = useHistory();
 
   const handleChange = ({ target }) => {
     setIsChecked(target.checked);
+    globalContext.themeDispatch({
+      type: target.checked ? 'setDarkTheme' : 'setLightTheme',
+    });
   };
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      searchContext.setSearchText(searchText);
+      globalContext.searchTextDispatch({ type: 'set', payload: innerSearchText });
+      history.push({ pathname: '/' });
     }
   };
 
@@ -96,8 +102,8 @@ const Navbar = () => {
               }}
               inputProps={{
                 'aria-label': 'search',
-                value: searchText,
-                onChange: (e) => setSearchText(e.target.value),
+                value: innerSearchText,
+                onChange: (e) => setInnerSearchText(e.target.value),
                 onKeyDown: handleKeyDown,
               }}
             />

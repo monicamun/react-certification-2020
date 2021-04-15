@@ -69,7 +69,6 @@ export function getRelatedVideos(setRelatedVideos, videoId) {
 }
 
 export function loadVideo(setVideo, videoId) {
-  console.log(videoId);
   initializeYoutubeApi(async () => {
     // call youtube videos list
     const response = await window.gapi.client.youtube.videos.list({
