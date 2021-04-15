@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import { render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import VideoDetails from './VideoDetails.component';
 
 describe('VideoDetails component', () => {
+  const [searchState, searchTextDispatch] = useReducer(() => {}, 'wizeline');
+
   it('Should throw error if video details are missing', () => {
     const history = createMemoryHistory();
     history.push({ pathname: '/:id', video: {} });
     const renderVideoDetails = () =>
       render(
         <Router history={history}>
-          <VideoDetails video={{}} />
+          <GlobalContext.Provider value={{ searchState, searchTextDispatch }}>
+            <VideoDetails video={{}} />
+          </GlobalContext.Provider>
         </Router>
       );
     expect(renderVideoDetails).toThrowError(
@@ -33,7 +37,9 @@ describe('VideoDetails component', () => {
   it('Should render video title', () => {
     render(
       <Router history={history}>
-        <VideoDetails />
+        <GlobalContext.Provider value={{ searchState, searchTextDispatch }}>
+          <VideoDetails />
+        </GlobalContext.Provider>
       </Router>
     );
     const videoTitle = screen.getByText(
@@ -45,7 +51,9 @@ describe('VideoDetails component', () => {
   it('Should render video description', () => {
     render(
       <Router history={history}>
-        <VideoDetails />
+        <GlobalContext.Provider value={{ searchState, searchTextDispatch }}>
+          <VideoDetails />
+        </GlobalContext.Provider>
       </Router>
     );
     const videoDescription = screen.getByText(/React hooks provide a highly-efficient/i);
@@ -55,7 +63,9 @@ describe('VideoDetails component', () => {
   it('should render youtube iframe with expected videoId', () => {
     render(
       <Router history={history}>
-        <VideoDetails />
+        <GlobalContext.Provider value={{ searchState, searchTextDispatch }}>
+          <VideoDetails />
+        </GlobalContext.Provider>
       </Router>
     );
 
