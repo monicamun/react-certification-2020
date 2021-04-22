@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
@@ -14,7 +14,7 @@ describe('VideoDetails component', () => {
     const renderVideoDetails = () =>
       render(
         <Router history={history}>
-            <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
+          <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
         </Router>
       );
     expect(renderVideoDetails).toThrowError(
@@ -36,7 +36,7 @@ describe('VideoDetails component', () => {
   it('Should render video title', () => {
     render(
       <Router history={history}>
-          <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
+        <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
       </Router>
     );
     const videoTitle = screen.getByText(
@@ -48,7 +48,7 @@ describe('VideoDetails component', () => {
   it('Should render video description', () => {
     render(
       <Router history={history}>
-          <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
+        <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
       </Router>
     );
     const videoDescription = screen.getByText(/React hooks provide a highly-efficient/i);
@@ -58,7 +58,7 @@ describe('VideoDetails component', () => {
   it('should render youtube iframe with expected videoId', () => {
     render(
       <Router history={history}>
-          <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
+        <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
       </Router>
     );
 

@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import AuthProvider from '../../providers/Auth';
@@ -9,11 +9,10 @@ import SecretPage from '../../pages/Secret';
 import Private from '../Private';
 import Layout from '../Layout';
 import { random } from '../../utils/fns';
-import SearchContext from '../../providers/SearchContext';
+import { GlobalContextProvider } from '../../providers/GlobalContext/GlobalContext';
 import VideoDetails from '../VideoDetails/VideoDetails.component';
 
 function App() {
-  const [searchText, setSearchText] = useState('wizeline');
   useLayoutEffect(() => {
     const { body } = document;
 
@@ -35,7 +34,7 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <SearchContext.Provider value={{ searchText, setSearchText }}>
+        <GlobalContextProvider>
           <Layout>
             <Switch>
               <Route exact path="/">
@@ -55,7 +54,7 @@ function App() {
               </Route>
             </Switch>
           </Layout>
-        </SearchContext.Provider>
+        </GlobalContextProvider>
       </AuthProvider>
     </BrowserRouter>
   );
