@@ -19,7 +19,7 @@ export default function VideoDetails({
 
   const getFavoritesButton = () => {
     if (!globalContext.user) {
-      return;
+      return '';
     }
 
     if (isFavorite) {

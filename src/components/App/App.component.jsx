@@ -5,8 +5,6 @@ import AuthProvider from '../../providers/Auth';
 import HomePage from '../../pages/Home';
 import LoginPage from '../../pages/Login';
 import NotFound from '../../pages/NotFound';
-import SecretPage from '../../pages/Secret';
-import Private from '../Private';
 import Layout from '../Layout';
 import { random } from '../../utils/fns';
 import { GlobalContextProvider } from '../../providers/GlobalContext/GlobalContext';
@@ -45,15 +43,13 @@ function App() {
               <Route exact path="/login">
                 <LoginPage />
               </Route>
-              <Private exact path="/secret">
-                <SecretPage />
-              </Private>
-              <PrivateComponent>
-                <Route path="/favorites">
+              <Route exact path="/favorites">
+                <PrivateComponent>
                   <Favorites />
-                </Route>
-              </PrivateComponent>
+                </PrivateComponent>
+              </Route>
               <Route exact path="/:videoId">
+                {console.log('video details')}
                 <VideoDetails />
               </Route>
               <Route path="*">
