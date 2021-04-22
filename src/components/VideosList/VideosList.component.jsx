@@ -11,7 +11,7 @@ export default function VideosList(props) {
   return (
     <>
       {props.videos.map((video) => (
-        <Card key={video.etag} video={video} />
+        <Card key={video.videoId} video={video} />
       ))}
     </>
   );

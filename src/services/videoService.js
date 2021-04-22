@@ -28,7 +28,6 @@ export function getVideos(setVideos, keyword) {
     const videos = response.result.items
       .map((video) => {
         return {
-          etag: video.etag,
           videoId: video.id.videoId,
           title: video.snippet.title,
           imageUrl: video.snippet.thumbnails.medium.url,
@@ -54,7 +53,6 @@ export function getRelatedVideos(setRelatedVideos, videoId) {
     const videos = response.result.items
       .map((video) => {
         return {
-          etag: video.etag,
           videoId: video.id.videoId,
           title: video.snippet.title,
           imageUrl: video.snippet.thumbnails.medium.url,
@@ -79,7 +77,6 @@ export function loadVideo(setVideo, videoId) {
     const videos = response.result.items
       .map((video) => {
         return {
-          etag: video.etag,
           videoId,
           title: video.snippet.title,
           imageUrl: video.snippet.thumbnails.medium.url,

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Grid } from '@material-ui/core';
 
 const StyledRelatedCard = styled.div`
@@ -13,9 +13,14 @@ const StyledImd = styled.img`
 
 export default function RelatedCard({ video }) {
   const history = useHistory();
+  const location = useLocation();
+  const favoritePath = location.pathname.startsWith('/favorites') ? 'favorites/' : '';
+
   return (
     <StyledRelatedCard
-      onClick={() => history.push({ pathname: `/${video.videoId}`, video })}
+      onClick={() =>
+        history.push({ pathname: `/${favoritePath}${video.videoId}`, video })
+      }
     >
       <Grid container>
         <Grid item xs={4}>

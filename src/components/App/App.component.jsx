@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 
 import AuthProvider from '../../providers/Auth';
 import HomePage from '../../pages/Home';
@@ -11,6 +11,8 @@ import Layout from '../Layout';
 import { random } from '../../utils/fns';
 import { GlobalContextProvider } from '../../providers/GlobalContext/GlobalContext';
 import VideoDetails from '../VideoDetails/VideoDetails.component';
+import Favorites from '../Favorites/Favorites.component';
+import PrivateComponent from '../PrivateComponent/Private.component';
 
 function App() {
   useLayoutEffect(() => {
@@ -32,7 +34,7 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter>
+    <Router>
       <AuthProvider>
         <GlobalContextProvider>
           <Layout>
@@ -46,6 +48,11 @@ function App() {
               <Private exact path="/secret">
                 <SecretPage />
               </Private>
+              <PrivateComponent>
+                <Route path="/favorites">
+                  <Favorites />
+                </Route>
+              </PrivateComponent>
               <Route exact path="/:videoId">
                 <VideoDetails />
               </Route>
@@ -56,7 +63,7 @@ function App() {
           </Layout>
         </GlobalContextProvider>
       </AuthProvider>
-    </BrowserRouter>
+    </Router>
   );
 }
 
