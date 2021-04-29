@@ -87,6 +87,11 @@ export default function TransitionsModal() {
             <div>
               <TextField
                 onChange={(e) => setPassword(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    loginUser();
+                  }
+                }}
                 type="password"
                 label="Password"
                 fullWidth

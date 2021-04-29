@@ -13,7 +13,7 @@ import InputBase from '@material-ui/core/InputBase';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Switch from '@material-ui/core/Switch';
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory, useRouteMatch } from 'react-router-dom';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Drawer from '@material-ui/core/Drawer';
@@ -97,6 +97,7 @@ const Navbar = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const [openDrawer, setOpenDrawer] = React.useState(false);
+  const { path } = useRouteMatch();
 
   const toggleDrawer = (event, opnDrawer) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -152,30 +153,30 @@ const Navbar = () => {
               onKeyDown={(e) => toggleDrawer(e, false)}
             >
               <List>
-                <ListItem
-                  button
-                  onClick={() => history.push({ pathname: '/' })}
-                  key="Home"
-                >
-                  <ListItemIcon>
-                    <HomeIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Home" />
-                </ListItem>
+                <Link to="/">
+                  <ListItem
+                    button
+                    onClick={() => history.push({ pathname: '/' })}
+                    key="Home"
+                  >
+                    <ListItemIcon>
+                      <HomeIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Home" />
+                  </ListItem>
+                </Link>
               </List>
               <Divider />
               {globalContext.user ? (
                 <List>
-                  <ListItem
-                    button
-                    key="Favorites"
-                    onClick={() => history.push({ pathname: '/favorites' })}
-                  >
-                    <ListItemIcon>
-                      <FavoriteSharpIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Favorites" />
-                  </ListItem>
+                  <Link to={`${path}favorites`}>
+                    <ListItem button key="Favorites">
+                      <ListItemIcon>
+                        <FavoriteSharpIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Favorites" />
+                    </ListItem>
+                  </Link>
                 </List>
               ) : (
                 ''

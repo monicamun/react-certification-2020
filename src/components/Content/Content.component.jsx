@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import VideosList from '../VideosList/VideosList.component';
-import { getVideos } from '../../services/videoService';
+import { fetchVideos } from '../../services/videoService';
 import { useGlobal } from '../../providers/GlobalContext/GlobalContext';
 
 const useStyles = makeStyles({
@@ -17,7 +17,11 @@ export default function Content() {
   const classes = useStyles();
 
   useEffect(() => {
-    getVideos(setVideos, globalContext.searchState);
+    async function loadVideos() {
+      const responseVideos = await fetchVideos(globalContext.searchState);
+      setVideos(responseVideos);
+    }
+    loadVideos();
   }, [globalContext.searchState]);
 
   return (

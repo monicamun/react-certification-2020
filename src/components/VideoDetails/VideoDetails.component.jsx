@@ -2,14 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router';
 import { Grid } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import { getVideos, loadVideo } from '../../services/videoService';
+import { fetchVideo, fetchVideos } from '../../services/videoService';
 import { useGlobal } from '../../providers/GlobalContext/GlobalContext';
 import RelatedCard from './RelatedCard';
 
-export default function VideoDetails({
-  loadVideoFn = loadVideo,
-  getVideosFn = getVideos,
-}) {
+export default function VideoDetails() {
   const [video, setVideo] = useState();
   const [relatedVideos, setRelatedVideos] = useState([]);
   const location = useLocation();
@@ -19,7 +16,7 @@ export default function VideoDetails({
 
   const getFavoritesButton = () => {
     if (!globalContext.user) {
-      return '';
+      return;
     }
 
     if (isFavorite) {
@@ -43,25 +40,28 @@ export default function VideoDetails({
   };
 
   useEffect(() => {
+    const loadVideo = async () => {
+      const responseVideo = await fetchVideo(videoId);
+      setVideo(responseVideo);
+    };
     if (typeof location.video === 'undefined' || location.video === null) {
-      loadVideoFn(setVideo, videoId);
+      loadVideo();
     } else {
       setVideo(location.video);
     }
-  }, [videoId, location.video, loadVideoFn]);
+  }, [videoId, location.video]);
 
   useEffect(() => {
+    const loadVideos = async () => {
+      const videos = await fetchVideos(globalContext.searchState);
+      setRelatedVideos(videos);
+    };
     if (location.pathname.startsWith('/favorites')) {
       setRelatedVideos(globalContext.favorites);
     } else {
-      getVideosFn(setRelatedVideos, globalContext.searchState);
+      loadVideos();
     }
-  }, [
-    globalContext.searchState,
-    getVideosFn,
-    location.pathname,
-    globalContext.favorites,
-  ]);
+  }, [globalContext.searchState, location.pathname, globalContext.favorites]);
 
   if (video == null) {
     return <div>Loading...</div>;

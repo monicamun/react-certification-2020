@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import VideoDetails from './VideoDetails.component';
+import { GlobalContextProvider } from '../../providers/GlobalContext/GlobalContext';
 
 describe('VideoDetails component', () => {
   const getVideosFn = jest.fn();
@@ -13,9 +14,11 @@ describe('VideoDetails component', () => {
     history.push({ pathname: '/:id', video: {} });
     const renderVideoDetails = () =>
       render(
-        <Router history={history}>
-          <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
-        </Router>
+        <GlobalContextProvider>
+          <Router history={history}>
+            <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
+          </Router>
+        </GlobalContextProvider>
       );
     expect(renderVideoDetails).toThrowError(
       'video details are required (videoId, title, description)'
@@ -35,9 +38,11 @@ describe('VideoDetails component', () => {
 
   it('Should render video title', () => {
     render(
-      <Router history={history}>
-        <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
-      </Router>
+      <GlobalContextProvider>
+        <Router history={history}>
+          <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
+        </Router>
+      </GlobalContextProvider>
     );
     const videoTitle = screen.getByText(
       /10 React Hooks Explained \/\/ Plus Build your own from Scratch/i
@@ -47,9 +52,11 @@ describe('VideoDetails component', () => {
 
   it('Should render video description', () => {
     render(
-      <Router history={history}>
-        <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
-      </Router>
+      <GlobalContextProvider>
+        <Router history={history}>
+          <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
+        </Router>
+      </GlobalContextProvider>
     );
     const videoDescription = screen.getByText(/React hooks provide a highly-efficient/i);
     expect(videoDescription).toBeInTheDocument();
@@ -57,9 +64,11 @@ describe('VideoDetails component', () => {
 
   it('should render youtube iframe with expected videoId', () => {
     render(
-      <Router history={history}>
-        <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
-      </Router>
+      <GlobalContextProvider>
+        <Router history={history}>
+          <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
+        </Router>
+      </GlobalContextProvider>
     );
 
     const iframe = screen.getByTestId(/youtube-iframe/i);
