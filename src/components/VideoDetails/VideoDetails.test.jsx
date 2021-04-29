@@ -1,14 +1,19 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
+import { setupServer } from 'msw/node';
 import VideoDetails from './VideoDetails.component';
 import { GlobalContextProvider } from '../../providers/GlobalContext/GlobalContext';
+import { handlers } from '../../mocks/handlers';
+
+const server = setupServer(...handlers);
+
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 describe('VideoDetails component', () => {
-  const getVideosFn = jest.fn();
-  const loadVideoFn = jest.fn();
-
   it('Should throw error if video details are missing', () => {
     const history = createMemoryHistory();
     history.push({ pathname: '/:id', video: {} });
@@ -16,7 +21,7 @@ describe('VideoDetails component', () => {
       render(
         <GlobalContextProvider>
           <Router history={history}>
-            <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
+            <VideoDetails />
           </Router>
         </GlobalContextProvider>
       );
@@ -37,13 +42,16 @@ describe('VideoDetails component', () => {
   history.push({ pathname: '/:id', video });
 
   it('Should render video title', () => {
-    render(
-      <GlobalContextProvider>
-        <Router history={history}>
-          <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
-        </Router>
-      </GlobalContextProvider>
-    );
+    act(() => {
+      render(
+        <GlobalContextProvider>
+          <Router history={history}>
+            <VideoDetails />
+          </Router>
+        </GlobalContextProvider>
+      );
+    });
+
     const videoTitle = screen.getByText(
       /10 React Hooks Explained \/\/ Plus Build your own from Scratch/i
     );
@@ -51,25 +59,30 @@ describe('VideoDetails component', () => {
   });
 
   it('Should render video description', () => {
-    render(
-      <GlobalContextProvider>
-        <Router history={history}>
-          <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
-        </Router>
-      </GlobalContextProvider>
-    );
+    act(() => {
+      render(
+        <GlobalContextProvider>
+          <Router history={history}>
+            <VideoDetails />
+          </Router>
+        </GlobalContextProvider>
+      );
+    });
+
     const videoDescription = screen.getByText(/React hooks provide a highly-efficient/i);
     expect(videoDescription).toBeInTheDocument();
   });
 
   it('should render youtube iframe with expected videoId', () => {
-    render(
-      <GlobalContextProvider>
-        <Router history={history}>
-          <VideoDetails getVideosFn={getVideosFn} loadVideoFn={loadVideoFn} />
-        </Router>
-      </GlobalContextProvider>
-    );
+    act(() => {
+      render(
+        <GlobalContextProvider>
+          <Router history={history}>
+            <VideoDetails />
+          </Router>
+        </GlobalContextProvider>
+      );
+    });
 
     const iframe = screen.getByTestId(/youtube-iframe/i);
 
