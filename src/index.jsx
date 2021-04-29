@@ -5,7 +5,9 @@ import App from './components/App';
 import './global.css';
 
 const { worker } =
-  process.env.NODE_ENV === 'development' ? require('./mocks/browser') : { worker: { start: () => {} }};
+  process.env.NODE_ENV === 'development'
+    ? require('./mocks/browser')
+    : { worker: { start: () => {} } };
 
 if (process.env.NODE_ENV === 'development') {
   worker.start();
