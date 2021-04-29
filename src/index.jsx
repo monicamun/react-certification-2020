@@ -4,9 +4,13 @@ import ReactDOM from 'react-dom';
 import App from './components/App';
 import './global.css';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const { worker } =
+  process.env.NODE_ENV === 'development'
+    ? require('./mocks/browser')
+    : { worker: { start: () => {} } };
+
+if (process.env.NODE_ENV === 'development') {
+  worker.start();
+}
+
+ReactDOM.render(<App />, document.getElementById('root'));

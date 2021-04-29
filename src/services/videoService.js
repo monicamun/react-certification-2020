@@ -1,96 +1,52 @@
-function initializeYoutubeApi(fn) {
-  // initialize gapi
-  window.gapi.load('client:auth2', async () => {
-    await window.gapi.auth2.init({
-      client_id:
-        '537606572960-o8ms8f2g27kepgh2fmd14m0bgsmsh6og.apps.googleusercontent.com',
-    });
-    // to initialize youtube we need to set the api key first
-    window.gapi.client.setApiKey('AIzaSyCykzCobNVjS-XeWrXWwPH06nLtq7Assis');
-    await window.gapi.client.load(
-      'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'
-    );
+const apikey = 'AIzaSyCF1UyI7423EPCH43sA-nrVaGoUcuppENA';
 
-    await fn();
-  });
+export async function fetchVideos(keyword) {
+  const url = new URL('https://youtube.googleapis.com/youtube/v3/search');
+  const params = {
+    part: 'snippet',
+    maxResults: 25,
+    q: keyword,
+    key: apikey,
+  };
+
+  url.search = new URLSearchParams(params).toString();
+  const response = await fetch(url);
+  const jsonResponse = await response.json();
+  const videos = jsonResponse.items
+    .map((video) => {
+      return {
+        videoId: video.id.videoId,
+        title: video.snippet.title,
+        imageUrl: video.snippet.thumbnails.medium.url,
+        description: video.snippet.description,
+      };
+    })
+    .filter((video) => video.videoId);
+  return videos;
 }
 
-export function getVideos(setVideos, keyword) {
-  initializeYoutubeApi(async () => {
-    // after initializing we can make the api call
-    // call youtube search
-    const response = await window.gapi.client.youtube.search.list({
-      part: ['snippet'],
-      maxResults: 25,
-      q: keyword,
-    });
+export async function fetchVideo(videoId) {
+  const url = new URL('https://youtube.googleapis.com/youtube/v3/videos');
+  const params = {
+    part: 'snippet,contentDetails,statistics',
+    id: videoId,
+    key: apikey,
+  };
+  url.search = new URLSearchParams(params).toString();
+  const response = await fetch(url);
+  const jsonResponse = await response.json();
 
-    const videos = response.result.items
-      .map((video) => {
-        return {
-          etag: video.etag,
-          videoId: video.id.videoId,
-          title: video.snippet.title,
-          imageUrl: video.snippet.thumbnails.medium.url,
-          description: video.snippet.description,
-        };
-      })
-      .filter((video) => video.videoId);
+  const videos = jsonResponse.items
+    .map((video) => {
+      return {
+        videoId: video.id,
+        title: video.snippet.title,
+        imageUrl: video.snippet.thumbnails.medium.url,
+        description: video.snippet.description,
+      };
+    })
+    .filter((video) => video.videoId);
 
-    // use the setVideos function passed by the component to set the videos to the state
-    setVideos(videos);
-  });
-}
-
-export function getRelatedVideos(setRelatedVideos, videoId) {
-  initializeYoutubeApi(async () => {
-    // call youtube search
-    const response = await window.gapi.client.youtube.search.list({
-      part: ['snippet'],
-      maxResults: 25,
-      relatedToVideoId: videoId,
-    });
-
-    const videos = response.result.items
-      .map((video) => {
-        return {
-          etag: video.etag,
-          videoId: video.id.videoId,
-          title: video.snippet.title,
-          imageUrl: video.snippet.thumbnails.medium.url,
-          description: video.snippet.description,
-        };
-      })
-      .filter((video) => video.videoId);
-
-    // use the setVideos function passed by the component to set the videos to the state
-    setRelatedVideos(videos);
-  });
-}
-
-export function loadVideo(setVideo, videoId) {
-  initializeYoutubeApi(async () => {
-    // call youtube videos list
-    const response = await window.gapi.client.youtube.videos.list({
-      part: ['snippet,contentDetails,statistics'],
-      id: [videoId],
-    });
-
-    const videos = response.result.items
-      .map((video) => {
-        return {
-          etag: video.etag,
-          videoId,
-          title: video.snippet.title,
-          imageUrl: video.snippet.thumbnails.medium.url,
-          description: video.snippet.description,
-        };
-      })
-      .filter((video) => video.videoId);
-
-    const video = videos[0];
-
-    // use the setVideo function passed by the component to set the video to the state
-    setVideo(video);
-  });
+  const video = videos[0];
+  return video;
 }

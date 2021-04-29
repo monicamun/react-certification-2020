@@ -1,9 +1,15 @@
-.lightTheme {
-  color: black;
+a {
+  text-decoration: none !important;
+}
+
+.lightTheme,
+.lightTheme a {
+  color: black !important;
   background-color: white;
 }
 
-.darkTheme {
-  color: white;
+.darkTheme,
+.darkTheme a {
+  color: white !important;
   background-color: #303030;
 }

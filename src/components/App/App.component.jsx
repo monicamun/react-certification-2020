@@ -1,16 +1,16 @@
 import React, { useLayoutEffect } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import AuthProvider from '../../providers/Auth';
 import HomePage from '../../pages/Home';
 import LoginPage from '../../pages/Login';
 import NotFound from '../../pages/NotFound';
-import SecretPage from '../../pages/Secret';
-import Private from '../Private';
 import Layout from '../Layout';
 import { random } from '../../utils/fns';
 import { GlobalContextProvider } from '../../providers/GlobalContext/GlobalContext';
 import VideoDetails from '../VideoDetails/VideoDetails.component';
+import Favorites from '../Favorites/Favorites.component';
+import PrivateComponent from '../PrivateComponent/Private.component';
 
 function App() {
   useLayoutEffect(() => {
@@ -32,7 +32,7 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter>
+    <Router>
       <AuthProvider>
         <GlobalContextProvider>
           <Layout>
@@ -43,9 +43,16 @@ function App() {
               <Route exact path="/login">
                 <LoginPage />
               </Route>
-              <Private exact path="/secret">
-                <SecretPage />
-              </Private>
+              <Route exact path="/favorites/:videoId">
+                <PrivateComponent>
+                  <VideoDetails />
+                </PrivateComponent>
+              </Route>
+              <Route exact path="/favorites">
+                <PrivateComponent>
+                  <Favorites />
+                </PrivateComponent>
+              </Route>
               <Route exact path="/:videoId">
                 <VideoDetails />
               </Route>
@@ -56,7 +63,7 @@ function App() {
           </Layout>
         </GlobalContextProvider>
       </AuthProvider>
-    </BrowserRouter>
+    </Router>
   );
 }
 
